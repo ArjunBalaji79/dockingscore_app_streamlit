@@ -6,6 +6,8 @@ from torch_geometric.data import Data
 from rdkit import Chem
 import os
 import numpy as np
+from torch_geometric.nn import GCNConv, GATConv, global_mean_pool, BatchNorm
+
 
 class GNNModel(nn.Module):
     def __init__(self, num_features, hidden_dim):
@@ -25,13 +27,44 @@ class GNNModel(nn.Module):
         x = F.relu(self.fc1(x))
         x = self.fc2(x)
         return x
+    
+class EnhancedGNNModel(nn.Module):
+    def __init__(self, num_atom_features, num_bond_features, hidden_dim, dropout_rate=0.5):
+        super(EnhancedGNNModel, self).__init__()
+        self.conv1 = GCNConv(num_atom_features, hidden_dim)
+        self.bn1 = BatchNorm(hidden_dim)
+        self.conv2 = GATConv(hidden_dim, hidden_dim)
+        self.bn2 = BatchNorm(hidden_dim)
+        self.conv3 = GCNConv(hidden_dim, hidden_dim)
+        self.bn3 = BatchNorm(hidden_dim)
+        self.fc1 = nn.Linear(hidden_dim, hidden_dim)
+        self.fc2 = nn.Linear(hidden_dim, 1)
+        self.dropout = nn.Dropout(dropout_rate)
+
+    def forward(self, data):
+        x, edge_index, batch = data.x, data.edge_index, data.batch
+
+        x = F.relu(self.bn1(self.conv1(x, edge_index)))
+        x = self.dropout(x)
+        x = F.relu(self.bn2(self.conv2(x, edge_index)))
+        x = self.dropout(x)
+        x = F.relu(self.bn3(self.conv3(x, edge_index)))
+        x = global_mean_pool(x, batch)
+
+        x = F.relu(self.fc1(x))
+        x = self.dropout(x)
+        x = self.fc2(x)
+        return x
 
 def load_model(model_name, protein):
     model_path = os.path.join('models', f'{model_name}_{protein}.pth')
     if not os.path.exists(model_path):
         raise FileNotFoundError(f"Model file not found: {model_path}")
     model_state_dict = torch.load(model_path)
-    model = GNNModel(num_features=4, hidden_dim=128)  # Match the architecture used during training
+    if model_name == 'GCN':
+        model = GNNModel(num_features=4, hidden_dim=128)
+    elif model_name == 'GCN+GAT':
+        model= EnhancedGNNModel(num_atom_features=4, num_bond_features=5, hidden_dim=128)
     model.load_state_dict(model_state_dict)
     model.eval()
     return model
