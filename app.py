@@ -1,9 +1,12 @@
 import streamlit as st
 from utils import load_model, smiles_to_graph
 
-# Preset data
-organs = {'Organ1': ['Protein1', 'Protein2'], 'Organ2': ['Protein3', 'Protein4']}
-models = ['gnn_model_2convlayer_5fold_withmorefeatures.pth', 'GAT']
+# Preset data for dropdown menus
+organs = {
+    'Brain': ['O14672', 'P07900', 'P35869', 'P40763', 'P49841', 'Q9UBS5', 'Q00535', 'Q11130', 'Q16539', 'P05129'], 
+    'Organ2': ['Protein3', 'Protein4']
+}
+models = ['GCN', 'GCN+GAT']
 
 def main():
     st.title('Docking Score Prediction')
@@ -23,13 +26,24 @@ def main():
 
     # Predict Button
     if st.button('Predict'):
-        model = load_model(selected_model, selected_protein)  # Adjust based on how you load models
-        graph = smiles_to_graph(smiles_string)  # Convert SMILES to graph
-        if graph:
-            prediction = model.predict(graph)  # Adjust based on your model's prediction method
-            st.write(f'Predicted Docking Score: {prediction}')
-        else:
-            st.error('Invalid SMILES string')
+        try:
+            # Load the model
+            model = load_model(selected_model, selected_protein)
+            
+            # Convert SMILES to graph
+            graph = smiles_to_graph(smiles_string)
+
+            if graph is not None:
+                # Make prediction
+                model.eval()
+                with torch.no_grad():
+                    prediction = model(graph)
+                    predicted_score = prediction.item()
+                st.write(f'Predicted Docking Score: {predicted_score}')
+            else:
+                st.error('Invalid SMILES string')
+        except Exception as e:
+            st.error(f'An error occurred: {e}')
 
 if __name__ == '__main__':
     main()
