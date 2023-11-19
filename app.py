@@ -26,8 +26,8 @@ def main():
     st.write("## Prediction Results")
 
     # Check if an image of the model architecture exists and display it
-    if os.path.exists('path/to/model_architecture.png'):
-        model_image = Image.open('path/to/model_architecture.png')
+    if os.path.exists('download-2.png'):
+        model_image = Image.open('download-2.png')
         st.image(model_image, caption='Model Architecture', use_column_width=True)
 
     # Predict Button
