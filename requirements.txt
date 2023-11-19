@@ -1,0 +1,6 @@
+streamlit
+torch
+torch-geometric
+numpy
+pandas
+rdkit-pypi
