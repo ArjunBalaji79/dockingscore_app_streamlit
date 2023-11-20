@@ -15,6 +15,10 @@ xyzview.setStyle({'cartoon':{'color':'spectrum'}})
 showmol(xyzview, height = 500,width=800)
 
 
+
+from stmol import *
+showmol(render_pdb(id = '1A2C'))
+
 # Preset data for dropdown menus
 organs = {
     'Brain': ['O14672', 'P07900', 'P35869', 'P40763', 'P49841', 'Q9UBS5', 'Q00535', 'Q11130', 'Q16539', 'P05129'], 
