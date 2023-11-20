@@ -29,7 +29,7 @@ def main():
     # st.image(model_image, caption='Model Architecture', use_column_width=True)
 
     if(selected_model=="GCN"):
-      model_image = Image.open('GCNmodelflowchart-removebg-preview.png')
+      model_image = Image.open('GCNmodelflowchart.png')
       st.image(model_image, caption='GCN Model Architecture', width=400)
     else:
       model_image = Image.open('EnhancedGCNmodelflowchart.png')
