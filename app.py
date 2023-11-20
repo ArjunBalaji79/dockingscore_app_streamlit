@@ -30,7 +30,7 @@ def main():
 
     if(selected_model=="GCN"):
       model_image = Image.open('GCNmodelflowchart.png')
-      st.image(model_image, caption='GCN Model Architecture',width=100)
+      st.image(model_image, caption='GCN Model Architecture',width=200)
     else:
       model_image = Image.open('EnhancedGCNmodelflowchart.png')
       st.image(model_image, caption='GCN+GAT Model Architecture', width=400)
