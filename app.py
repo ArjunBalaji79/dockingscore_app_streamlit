@@ -5,6 +5,16 @@ import numpy as np
 from PIL import Image
 import os
 
+
+from stmol import showmol
+import py3Dmol
+# 1A2C
+# Structure of thrombin inhibited by AERUGINOSIN298-A from a BLUE-GREEN ALGA
+xyzview = py3Dmol.view(query='pdb:1A2C') 
+xyzview.setStyle({'cartoon':{'color':'spectrum'}})
+showmol(xyzview, height = 500,width=800)
+
+
 # Preset data for dropdown menus
 organs = {
     'Brain': ['O14672', 'P07900', 'P35869', 'P40763', 'P49841', 'Q9UBS5', 'Q00535', 'Q11130', 'Q16539', 'P05129'], 
