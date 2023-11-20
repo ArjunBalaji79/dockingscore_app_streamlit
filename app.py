@@ -57,7 +57,7 @@ def main():
 
     # Optional: Additional UI elements or animations
     st.write("## Additional Information")
-    st.markdown("Page is Under Construction")
+    st.markdown("Page is Under Construction :construction: :rotating_light: :helicopter:")
 
 if __name__ == '__main__':
     main()
