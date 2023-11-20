@@ -24,7 +24,7 @@ def main():
     smiles_string = st.sidebar.text_input('Enter SMILES String')
 
     # Main panel
-    st.write("## Prediction Results")
+    st.write("## Prediction Results and Model Architecture")
     # model_image = Image.open('download-2.png')
     # st.image(model_image, caption='Model Architecture',use_column_width=True)
 
