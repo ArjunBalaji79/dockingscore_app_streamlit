@@ -4,8 +4,7 @@ import torch
 import numpy as np
 from PIL import Image
 import os
-
-
+import stmol
 from stmol import showmol
 import py3Dmol
 # 1A2C
