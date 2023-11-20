@@ -3,6 +3,7 @@ from utils import load_model, smiles_to_graph
 import torch
 import numpy as np
 from PIL import Image
+import os
 
 # Preset data for dropdown menus
 organs = {
