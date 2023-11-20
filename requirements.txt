@@ -4,3 +4,6 @@ torch-geometric
 numpy
 pandas
 rdkit-pypi
+py3Dmol
+ipyspeck
+ipywidgets
