@@ -33,7 +33,7 @@ def main():
       st.image(model_image, caption='GCN Model Architecture',width=200)
     else:
       model_image = Image.open('EnhancedGCNmodelflowchart.png')
-      st.image(model_image, caption='GCN+GAT Model Architecture', width=200)
+      st.image(model_image, caption='GCN+GAT Model Architecture', width=250)
       
 
     # Predict Button
