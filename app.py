@@ -28,7 +28,7 @@ def main():
     model_image = Image.open('download-2.png')
     st.image(model_image, caption='Model Architecture', use_column_width=True)
 
-    if(model=="GCN"):
+    if(selected_model=="GCN"):
       model_image = Image.open('GCNmodelflowchart.png')
       st.image(model_image, caption='GCN Model Architecture', use_column_width=True)
     else:
