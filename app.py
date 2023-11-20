@@ -57,7 +57,7 @@ def main():
 
     # Optional: Additional UI elements or animations
     st.write("## Additional Information")
-    st.markdown("Such as RMSE,MAE dataset details.")
+    st.markdown("Page underconstruction")
 
 if __name__ == '__main__':
     main()
