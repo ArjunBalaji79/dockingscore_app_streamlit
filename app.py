@@ -25,8 +25,8 @@ def main():
 
     # Main panel
     st.write("## Prediction Results")
-    model_image = Image.open('download-2.png')
-    st.image(model_image, caption='Model Architecture', use_column_width=True)
+    # model_image = Image.open('download-2.png')
+    # st.image(model_image, caption='Model Architecture', use_column_width=True)
 
     if(selected_model=="GCN"):
       model_image = Image.open('GCNmodelflowchart.png')
