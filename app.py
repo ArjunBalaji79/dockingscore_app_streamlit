@@ -13,7 +13,7 @@ organs = {
 models = ['GCN', 'GCN+GAT']
 
 def main():
-    st.title('Docking Score Prediction (Under Construction)')
+    st.title('Docking Score Prediction')
 
     # Sidebar for user input
     st.sidebar.header("User Input Features")
@@ -57,7 +57,7 @@ def main():
 
     # Optional: Additional UI elements or animations
     st.write("## Additional Information")
-    st.markdown("In Progress")
+    st.markdown("Page is Under Construction")
 
 if __name__ == '__main__':
     main()
