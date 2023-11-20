@@ -7,3 +7,4 @@ rdkit-pypi
 py3Dmol
 ipyspeck
 ipywidgets
+stmol
