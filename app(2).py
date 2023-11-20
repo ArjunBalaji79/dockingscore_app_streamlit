@@ -27,7 +27,7 @@ def main():
     st.write("## Prediction Results")
     model_image = Image.open('download-2.png')
     st.image(model_image, caption='Model Architecture', use_column_width=True)
-
+    st.write("[![](https://mermaid.ink/img/pako:eNp1km9PwjAQxr_K5V5hMpbuD4PthQlssJgAmsgrGTGFVVjc2qV2BmR8d8vUCCj3orm2z--5tHd7XImUYYDwHWtJyw3MooTDSfTnd7ysFERU0QW027f11gCWrtlzxlOm8yVVq00Ng1YcTkPB32FMd0yCdXPuM2jYwVE8FbIwYGRKllc1hK24P_sFL7Dwf8yASIpSVKqG6KKwfeEQXSs8nMe5WNIcJoxyeBAiz_h6cQ4PG_hPzVFrnHFG5ZW3jo4UxOciG9pwXyn9lyfqBBNEAwsmC5qluhn7412CasMKlmCg05TKVy3jB62jlRKPO77CQMmKGViVKVUsyqjuXYHBC83f9GlJ-ZMQxY9IbzHY4xYDz_FMSy9Ox-44PvFsA3cYWB2z67sesR3ftYhLiHsw8KMxIKZnOT236_o-6RGHeI6BLM2UkJOv2WlG6PAJWb6nEQ?type=png)](https://mermaid.live/edit#pako:eNp1km9PwjAQxr_K5V5hMpbuD4PthQlssJgAmsgrGTGFVVjc2qV2BmR8d8vUCCj3orm2z--5tHd7XImUYYDwHWtJyw3MooTDSfTnd7ysFERU0QW027f11gCWrtlzxlOm8yVVq00Ng1YcTkPB32FMd0yCdXPuM2jYwVE8FbIwYGRKllc1hK24P_sFL7Dwf8yASIpSVKqG6KKwfeEQXSs8nMe5WNIcJoxyeBAiz_h6cQ4PG_hPzVFrnHFG5ZW3jo4UxOciG9pwXyn9lyfqBBNEAwsmC5qluhn7412CasMKlmCg05TKVy3jB62jlRKPO77CQMmKGViVKVUsyqjuXYHBC83f9GlJ-ZMQxY9IbzHY4xYDz_FMSy9Ox-44PvFsA3cYWB2z67sesR3ftYhLiHsw8KMxIKZnOT236_o-6RGHeI6BLM2UkJOv2WlG6PAJWb6nEQ)")
     # Check if an image of the model architecture exists and display it
   
 
