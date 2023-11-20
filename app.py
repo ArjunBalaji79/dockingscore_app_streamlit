@@ -25,11 +25,11 @@ def main():
 
     # Main panel
     st.write("## Prediction Results")
+    model_image = Image.open('dockingscore_app_streamlit/download-2.png')
+    st.image(model_image, caption='Model Architecture', use_column_width=True)
 
     # Check if an image of the model architecture exists and display it
-    if os.path.exists('dockingscore_app_streamlit/download-2.png'):
-        model_image = Image.open('dockingscore_app_streamlit/download-2.png')
-        st.image(model_image, caption='Model Architecture', use_column_width=True)
+  
 
     # Predict Button
     if st.button('Predict'):
