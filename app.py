@@ -4,7 +4,10 @@ import torch
 import numpy as np
 from PIL import Image
 import os
-
+import stmol
+from stmol import *
+from stmol import showmol
+import py3Dmol
 
 # Preset data for dropdown menus
 organs = {
@@ -60,14 +63,12 @@ def main():
     st.write("## Additional Information")
     st.markdown("Page is Under Construction :construction: :rotating_light: :helicopter:")
     
-    from stmol import showmol
-    import py3Dmol
+
     # 1A2C
     # Structure of thrombin inhibited by AERUGINOSIN298-A from a BLUE-GREEN ALGA
     xyzview = py3Dmol.view(query='pdb:1A2C') 
     xyzview.setStyle({'cartoon':{'color':'spectrum'}})
     showmol(xyzview, height = 500,width=800)
-    from stmol import *
     showmol(render_pdb(id = '1A2C'))
 
 if __name__ == '__main__':
