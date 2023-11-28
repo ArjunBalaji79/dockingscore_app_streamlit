@@ -113,27 +113,30 @@ def main():
     col1, col2, col3 = st.columns([1,2,1])
     with col2:
         st.markdown(
-            f'<div class="big-button">{st.button("Predict")}</div>',
+            f'<div class="big-button">',
             unsafe_allow_html=True
         )
-    
-    if st.button('Predict'):
-        try:
-            # Load the model
-            model = load_model(selected_model, selected_protein)
-            graph = smiles_to_graph(smiles_string)  # Convert SMILES to graph
+        if st.button('Predict', key='predict_button'):
+            try:
+                # Load the model
+                model = load_model(selected_model, selected_protein)
+                graph = smiles_to_graph(smiles_string)  # Convert SMILES to graph
 
-            if graph is not None:
-                # Make prediction
-                model.eval()
-                with torch.no_grad():
-                    prediction = model(graph)
-                    predicted_score = prediction.item()
-                st.success(f'Predicted Docking Score: {predicted_score}')
-            else:
-                st.error('Invalid SMILES string')
-        except Exception as e:
-            st.error(f'An error occurred: {e}')
+                if graph is not None:
+                    # Make prediction
+                    model.eval()
+                    with torch.no_grad():
+                        prediction = model(graph)
+                        predicted_score = prediction.item()
+                    st.success(f'Predicted Docking Score: {predicted_score}')
+                else:
+                    st.error('Invalid SMILES string')
+            except Exception as e:
+                st.error(f'An error occurred: {e}')
+
+        st.markdown('</div>', unsafe_allow_html=True)
+
+        st.markdown('</div>', unsafe_allow_html=True)
 
     # Optional: Additional UI elements or animations
     st.write("## Additional Information")
