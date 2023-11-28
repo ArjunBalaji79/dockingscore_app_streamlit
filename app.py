@@ -31,7 +31,7 @@ def main():
     # model_image = Image.open('download-2.png')
     # st.image(model_image, caption='Model Architecture',use_column_width=True)
 
-    col1, col2, col3 = st.columns([1, 2, 1])
+    col1, col2, col3 = st.columns([1, 3, 1])
     with col2:
         # Using markdown with HTML to style the button (limited styling)
         smiles_string = st.text_input('Enter SMILES String', key='smiles_input')
