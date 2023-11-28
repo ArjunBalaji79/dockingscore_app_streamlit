@@ -31,16 +31,7 @@ def main():
     st.write("## Prediction Results and Model Architecture")
     # model_image = Image.open('download-2.png')
     # st.image(model_image, caption='Model Architecture',use_column_width=True)
-
-    if(selected_model=="GCN"):
-      model_image = Image.open('GCNmodelflowchart.png')
-      st.image(model_image, caption='GCN Model Architecture',width=200)
-    else:
-      model_image = Image.open('EnhancedGCNmodelflowchart.png')
-      st.image(model_image, caption='GCN+GAT Model Architecture', width=250)
-      
-
-    # Predict Button
+    
     if st.button('Predict'):
         try:
             # Load the model
@@ -58,6 +49,16 @@ def main():
                 st.error('Invalid SMILES string')
         except Exception as e:
             st.error(f'An error occurred: {e}')
+
+    if(selected_model=="GCN"):
+      model_image = Image.open('GCNmodelflowchart.png')
+      st.image(model_image, caption='GCN Model Architecture',width=200)
+    else:
+      model_image = Image.open('EnhancedGCNmodelflowchart.png')
+      st.image(model_image, caption='GCN+GAT Model Architecture', width=250)
+      
+
+
 
     # Optional: Additional UI elements or animations
     st.write("## Additional Information")
