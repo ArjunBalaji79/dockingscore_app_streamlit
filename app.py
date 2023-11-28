@@ -136,8 +136,6 @@ def main():
 
         st.markdown('</div>', unsafe_allow_html=True)
 
-        st.markdown('</div>', unsafe_allow_html=True)
-
     # Optional: Additional UI elements or animations
     st.write("## Additional Information")
     st.markdown("Page is Under Construction :construction: :rotating_light: :helicopter:")
