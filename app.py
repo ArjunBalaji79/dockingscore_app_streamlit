@@ -25,16 +25,16 @@ def main():
     proteins = organs[selected_organ]
     selected_protein = st.sidebar.selectbox('Select Protein', proteins)
     selected_model = st.sidebar.selectbox('Select Model', models)
-    smiles_string = st.sidebar.text_input('Enter SMILES String')
 
     # Main panel
     st.write("## Prediction Results and Model Architecture")
     # model_image = Image.open('download-2.png')
     # st.image(model_image, caption='Model Architecture',use_column_width=True)
 
-    col1, col2, col3 = st.columns([1, 3, 1])
+    col1, col2, col3 = st.columns([1, 2, 1])
     with col2:
         # Using markdown with HTML to style the button (limited styling)
+        smiles_string = st.text_input('Enter SMILES String', key='smiles_input')
         st.markdown(
             """
             <style>
