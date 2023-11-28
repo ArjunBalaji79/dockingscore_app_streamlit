@@ -31,6 +31,21 @@ def main():
     st.write("## Prediction Results and Model Architecture")
     # model_image = Image.open('download-2.png')
     # st.image(model_image, caption='Model Architecture',use_column_width=True)
+
+    col1, col2, col3 = st.columns([1, 3, 1])
+    with col2:
+        # Using markdown with HTML to style the button (limited styling)
+        st.markdown(
+            """
+            <style>
+                div.stButton > button:first-child {
+                    width: 100%;
+                    height: 50px;  # Custom height
+                    font-size: 20px;  # Larger font size
+                }
+            </style>""",
+            unsafe_allow_html=True,
+        )
     
     if st.button('Predict'):
         try:
