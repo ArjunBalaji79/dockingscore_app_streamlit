@@ -9,6 +9,12 @@ from stmol import *
 from stmol import showmol
 import py3Dmol
 
+# Preset data for dropdown menus
+organs = {
+    'Brain': ['O14672', 'P07900', 'P35869', 'P40763', 'P49841', 'Q9UBS5', 'Q00535', 'Q11130', 'Q16539', 'P05129'], 
+    'Organ2': ['Protein3', 'Protein4']
+}
+models = ['GCN', 'GCN+GAT']
 
 # Define your color palette
 primaryColor = "#4a69bd"  # Dark blue
@@ -29,7 +35,7 @@ st.set_page_config(
     }
 )
 
-# Custom CSS to inject our own color scheme
+# Custom CSS to inject our own color scheme and button style
 st.markdown(
     f"""
     <style>
@@ -69,21 +75,18 @@ st.markdown(
         header {{
             background-color: {primaryColor};
         }}
+
+        /* Style for larger and centered button */
+        .big-button .stButton>button {{
+            height: 3em;     /* Larger button */
+            width: 10em;     /* Wider button */
+            font-size: 1em;  /* Larger font */
+            border-radius: 5px; /* Rounded corners */
+        }}
     </style>
     """,
-    unsafe_allow_html=True,
+    unsafe_allow_html=True
 )
-
-
-
-
-
-# Preset data for dropdown menus
-organs = {
-    'Brain': ['O14672', 'P07900', 'P35869', 'P40763', 'P49841', 'Q9UBS5', 'Q00535', 'Q11130', 'Q16539', 'P05129'], 
-    'Organ2': ['Protein3', 'Protein4']
-}
-models = ['GCN', 'GCN+GAT']
 
 def main():
     st.title('Graph Neural Network based Docking Score Prediction')
@@ -98,8 +101,21 @@ def main():
 
     # Main panel
     st.write("## Prediction Results and Model Architecture")
-    # model_image = Image.open('download-2.png')
-    # st.image(model_image, caption='Model Architecture',use_column_width=True)
+
+    if(selected_model=="GCN"):
+      model_image = Image.open('GCNmodelflowchart.png')
+      st.image(model_image, caption='GCN Model Architecture',width=200)
+    else:
+      model_image = Image.open('EnhancedGCNmodelflowchart.png')
+      st.image(model_image, caption='GCN+GAT Model Architecture', width=250)
+
+    # Predict Button
+    col1, col2, col3 = st.columns([1,2,1])
+    with col2:
+        st.markdown(
+            f'<div class="big-button">{st.button("Predict")}</div>',
+            unsafe_allow_html=True
+        )
     
     if st.button('Predict'):
         try:
@@ -119,27 +135,16 @@ def main():
         except Exception as e:
             st.error(f'An error occurred: {e}')
 
-    if(selected_model=="GCN"):
-      model_image = Image.open('GCNmodelflowchart.png')
-      st.image(model_image, caption='GCN Model Architecture',width=200)
-    else:
-      model_image = Image.open('EnhancedGCNmodelflowchart.png')
-      st.image(model_image, caption='GCN+GAT Model Architecture', width=250)
-      
-
-
-
     # Optional: Additional UI elements or animations
     st.write("## Additional Information")
     st.markdown("Page is Under Construction :construction: :rotating_light: :helicopter:")
-    
 
     # 1A2C
     # Structure of thrombin inhibited by AERUGINOSIN298-A from a BLUE-GREEN ALGA
     xyzview = py3Dmol.view(query='pdb:1A2C') 
     xyzview.setStyle({'cartoon':{'color':'spectrum'}})
     showmol(xyzview, height = 500,width=800)
-    
+    showmol(render_pdb(id = '1A2C'))
 
 if __name__ == '__main__':
     main()
