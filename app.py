@@ -18,7 +18,7 @@ organs = {
 models = ['GCN', 'GCN+GAT']
 
 def main():
-    st.title('Graph Neural Network based Docking Score Prediction')
+    st.title('ProteoDockNet: A Graph Neural Network Based Platform for Docking Score Prediction')
 
     # Sidebar for user input
     st.sidebar.header("User Input Features")
