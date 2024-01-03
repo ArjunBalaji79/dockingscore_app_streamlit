@@ -12,7 +12,7 @@ import py3Dmol
 # Preset data for dropdown menus
 organs = {
     'Brain': ['O14672', 'P07900', 'P35869', 'P40763', 'P49841', 'Q9UBS5l', 'Q00535', 'Q11130', 'Q16539', 'P05129'], 
-    'Liver': ['P04150', 'P14555', 'P19793', 'P07900_Liver', 'P22845', 'P42574', 'P55210', 'P15465'],
+    'Liver': ['P04150', 'P14555', 'P19793', 'P07900_Liver', 'P22845', 'P42574', 'P55210', 'Q15465'],
     'Kidney': ['O14920', 'Protein4']
 }
 models = ['GCN', 'GCN+GAT']
