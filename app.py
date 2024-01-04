@@ -34,7 +34,7 @@ def main():
 
     col1, col2, col3 = st.columns([1, 3, 1])
     with col2:
-        # Using markdown with HTML to style the button (limited styling)
+        # Using markdown with HTML to style the button 
         smiles_string = st.text_input('Enter SMILES String', key='smiles_input')
         st.markdown(
             """
@@ -76,7 +76,6 @@ def main():
 
 
 
-    # Optional: Additional UI elements or animations
     st.write("## Additional Information")
     st.markdown("Page is Under Construction :construction: :rotating_light: :helicopter:")
     
