@@ -1,11 +1,13 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from torch_geometric.nn import GCNConv, GATConv, global_mean_pool, BatchNorm
+from torch_geometric.nn import GCNConv, global_mean_pool
 from torch_geometric.data import Data
 from rdkit import Chem
 import os
 import numpy as np
+from torch_geometric.nn import GCNConv, GATConv, global_mean_pool, BatchNorm
+
 
 class GNNModel(nn.Module):
     def __init__(self, num_features, hidden_dim):
@@ -25,7 +27,7 @@ class GNNModel(nn.Module):
         x = F.relu(self.fc1(x))
         x = self.fc2(x)
         return x
-
+    
 class EnhancedGNNModel(nn.Module):
     def __init__(self, num_atom_features, num_bond_features, hidden_dim, dropout_rate=0.5):
         super(EnhancedGNNModel, self).__init__()
@@ -62,22 +64,10 @@ def load_model(model_name, protein):
     if model_name == 'GCN':
         model = GNNModel(num_features=4, hidden_dim=128)
     elif model_name == 'GCN+GAT':
-        # Rename keys in state dictionary
-        new_state_dict = {}
-        for key, value in model_state_dict.items():
-            if 'conv2.lin_src' in key:
-                new_key = key.replace('conv2.lin_src', 'conv2.lin')
-                new_state_dict[new_key] = value
-            elif 'conv2.lin_dst' in key:
-                continue  # Skip this key as it's not needed
-            else:
-                new_state_dict[key] = value
-        
-        model = EnhancedGNNModel(num_atom_features=4, num_bond_features=5, hidden_dim=128)
-        model.load_state_dict(new_state_dict)
+        model= EnhancedGNNModel(num_atom_features=4, num_bond_features=5, hidden_dim=128)
+    model.load_state_dict(model_state_dict)
     model.eval()
     return model
-
 
 def smiles_to_graph(smiles):
     molecule = Chem.MolFromSmiles(smiles)
@@ -86,7 +76,7 @@ def smiles_to_graph(smiles):
     molecule = Chem.AddHs(molecule)
 
     num_atoms = molecule.GetNumAtoms()
-    atom_features = np.zeros((num_atoms, 4))  
+    atom_features = np.zeros((num_atoms, 4))  # Include Boron as per your training script
 
     for atom in molecule.GetAtoms():
         atom_type = atom.GetSymbol()
