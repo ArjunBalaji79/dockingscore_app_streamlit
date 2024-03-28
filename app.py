@@ -75,12 +75,6 @@ def main():
       #st.image(model_image, caption='GCN+GAT Model Architecture', width=250)
       
 
-
-
-    st.write("## Additional Information")
-    st.markdown("Page is Under Construction :construction: :rotating_light: :helicopter:")
-    
-
     # 1A2C
     # Structure of thrombin inhibited by AERUGINOSIN298-A from a BLUE-GREEN ALGA
     xyzview = py3Dmol.view(query='pdb:1A2C') 
