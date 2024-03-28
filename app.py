@@ -60,7 +60,7 @@ def main():
                 with torch.no_grad():
                     prediction = model(graph)
                     predicted_score = prediction.item()
-                st.success(f'Predicted Docking Score: {predicted_score.4f}')
+                st.success(f'Predicted Docking Score: {predicted_score}')
             else:
                 st.error('Invalid SMILES string')
         except Exception as e:
