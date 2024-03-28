@@ -12,8 +12,8 @@ import py3Dmol
 # Preset data for dropdown menus
 organs = {
     'Brain': ['O14672', 'P07900', 'P35869', 'P40763', 'P49841', 'Q9UBS5l', 'Q00535', 'Q11130', 'Q16539', 'P05129'], 
-    'Liver': ['P04150', 'P14555', 'P19793', 'P07900_Liver', 'P22845', 'P42574', 'P55210', 'Q15465'],
-    'Kidney': ['O14920', 'Protein4']
+    'Liver': ['P04150', 'P14555', 'P19793', 'P07900_Liver', 'P22845', 'P42574', 'P55210', 'Q15465', 'P35869_Liver', 'Q96RI1'],
+    'Kidney': ['O14920', 'P12821', 'P35869_Kidney', 'P42574_Kidney', 'P55210_Kidney', 'Q15303', 'Q16236', 'Q16665', 'P41595','P80365']
 }
 models = ['GCN', 'GCN+GAT']
 
@@ -60,7 +60,8 @@ def main():
                 with torch.no_grad():
                     prediction = model(graph)
                     predicted_score = prediction.item()
-                st.success(f'Predicted Docking Score: {predicted_score}')
+                    formatted_score = "{:.4f} KCal".format(predicted_score)
+                st.success(f'Predicted Docking Score: {formatted_score}')
             else:
                 st.error('Invalid SMILES string')
         except Exception as e:
@@ -73,12 +74,6 @@ def main():
       #model_image = Image.open('EnhancedGCNmodelflowchart.png')
       #st.image(model_image, caption='GCN+GAT Model Architecture', width=250)
       
-
-
-
-    st.write("## Additional Information")
-    st.markdown("Page is Under Construction :construction: :rotating_light: :helicopter:")
-    
 
     # 1A2C
     # Structure of thrombin inhibited by AERUGINOSIN298-A from a BLUE-GREEN ALGA
