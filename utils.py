@@ -73,6 +73,8 @@ def load_model(model_name, protein):
             elif 'conv2.lin_dst' not in key:  # Ensure only relevant keys are included
                 new_state_dict[key] = value
         model.load_state_dict(new_state_dict)
+    else:
+        raise ValueError("Invalid model name")
     
     model.eval()
     return model
