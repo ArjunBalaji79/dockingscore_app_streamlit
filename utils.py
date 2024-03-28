@@ -7,6 +7,25 @@ from rdkit import Chem
 import os
 import numpy as np
 
+class GNNModel(nn.Module):
+    def __init__(self, num_features, hidden_dim):
+        super(GNNModel, self).__init__()
+        self.conv1 = GCNConv(num_features, hidden_dim)
+        self.conv2 = GCNConv(hidden_dim, hidden_dim)
+        self.fc1 = nn.Linear(hidden_dim, hidden_dim)
+        self.fc2 = nn.Linear(hidden_dim, 1)
+
+    def forward(self, data):
+        x, edge_index, batch = data.x, data.edge_index, data.batch
+        x = self.conv1(x, edge_index)
+        x = F.relu(x)
+        x = self.conv2(x, edge_index)
+        x = F.relu(x)
+        x = global_mean_pool(x, batch)
+        x = F.relu(self.fc1(x))
+        x = self.fc2(x)
+        return x
+
 class EnhancedGNNModel(nn.Module):
     def __init__(self, num_atom_features, num_bond_features, hidden_dim, dropout_rate=0.5):
         super(EnhancedGNNModel, self).__init__()
