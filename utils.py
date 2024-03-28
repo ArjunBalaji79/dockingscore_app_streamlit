@@ -64,7 +64,7 @@ def load_model(model_name, protein):
     if model_name == 'GCN':
         model = GNNModel(num_features=4, hidden_dim=128)
     elif model_name == 'GCN+GAT':
-        model= EnhancedGNNModel(num_atom_features=4, num_bond_features=5, hidden_dim=128)
+        model = EnhancedGNNModel(num_atom_features=4, num_bond_features=5, hidden_dim=128)
     model.load_state_dict(model_state_dict)
     model.eval()
     return model
