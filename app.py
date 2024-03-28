@@ -60,8 +60,6 @@ def main():
                 with torch.no_grad():
                     prediction = model(graph)
                     predicted_score = prediction.item()
-                    if selected_model=="GCN":
-                        predicted_score=predicted_score*1000
                     formatted_score = "{:.4f} KCal".format(predicted_score)
                 st.success(f'Predicted Docking Score: {formatted_score}')
             else:
