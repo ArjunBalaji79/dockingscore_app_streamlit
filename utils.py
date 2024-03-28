@@ -67,7 +67,7 @@ def smiles_to_graph(smiles):
     molecule = Chem.AddHs(molecule)
 
     num_atoms = molecule.GetNumAtoms()
-    atom_features = np.zeros((num_atoms, 4))  # Include Boron as per your training script
+    atom_features = np.zeros((num_atoms, 4))  
 
     for atom in molecule.GetAtoms():
         atom_type = atom.GetSymbol()
