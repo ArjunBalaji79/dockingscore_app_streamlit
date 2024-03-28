@@ -60,12 +60,20 @@ def load_model(model_name, protein):
     model_path = os.path.join('models', f'{model_name}_{protein}.pth')
     if not os.path.exists(model_path):
         raise FileNotFoundError(f"Model file not found: {model_path}")
-    model_state_dict = torch.load(model_path)
+    
     if model_name == 'GCN':
         model = GNNModel(num_features=4, hidden_dim=128)
     elif model_name == 'GCN+GAT':
-        model= EnhancedGNNModel(num_atom_features=4, num_bond_features=5, hidden_dim=128)
-    model.load_state_dict(model_state_dict)
+        model = EnhancedGNNModel(num_atom_features=4, num_bond_features=5, hidden_dim=128)
+        new_state_dict = {}
+        for key, value in torch.load(model_path).items():
+            if 'conv2.lin_src' in key:
+                new_key = key.replace('conv2.lin_src', 'conv2.lin')
+                new_state_dict[new_key] = value
+            elif 'conv2.lin_dst' not in key:  # Ensure only relevant keys are included
+                new_state_dict[key] = value
+        model.load_state_dict(new_state_dict)
+    
     model.eval()
     return model
 
