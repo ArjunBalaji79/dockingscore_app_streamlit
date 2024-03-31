@@ -1,5 +1,5 @@
 import streamlit as st
-from utils import load_model, smiles_to_graph
+from utils import load_gcn_model, load_gcn_gat_model, smiles_to_graph
 import torch
 import numpy as np
 from PIL import Image
@@ -50,8 +50,14 @@ def main():
     
     if st.button('Predict'):
         try:
-            # Load the model
-            model = load_model(selected_model, selected_protein)
+            # Load the model based on the selected_model
+            if selected_model == 'GCN':
+                model = load_gcn_model(selected_protein)
+            elif selected_model == 'GCN+GAT':
+                model = load_gcn_gat_model(selected_protein)
+            else:
+                raise ValueError(f"Invalid model selection: {selected_model}")
+
             graph = smiles_to_graph(smiles_string)  # Convert SMILES to graph
 
             if graph is not None:
