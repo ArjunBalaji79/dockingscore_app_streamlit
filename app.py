@@ -42,26 +42,26 @@ def main():
     name_mapping = generate_name_mapping(csv_file_path)
     
     # Update organs dictionary using name mapping
-updated_organs = {}
-for organ, proteins in organs.items():
-    updated_proteins = []
-    for protein in proteins:
-        updated_proteins.append(name_mapping.get(protein, protein))
-    updated_organs[organ] = updated_proteins
+    updated_organs = {}
+    for organ, proteins in organs.items():
+        updated_proteins = []
+        for protein in proteins:
+            updated_proteins.append(name_mapping.get(protein, protein))
+        updated_organs[organ] = updated_proteins
 
-selected_organ = st.sidebar.selectbox('Select Organ', list(updated_organs.keys()))
-proteins = updated_organs[selected_organ]
+    selected_organ = st.sidebar.selectbox('Select Organ', list(updated_organs.keys()))
+    proteins = updated_organs[selected_organ]
 
-selected_protein_display = st.sidebar.selectbox('Select Protein', proteins)
-selected_protein = selected_protein_display  # Keep a copy of the displayed protein name
+    selected_protein_display = st.sidebar.selectbox('Select Protein', proteins)
+    selected_protein = selected_protein_display  # Keep a copy of the displayed protein name
 
 # Convert the displayed protein name back to the original UniProt name
-for uni_id, name in name_mapping.items():
-    if name == selected_protein_display:
-        selected_protein = uni_id
-        break
+    for uni_id, name in name_mapping.items():
+        if name == selected_protein_display:
+            selected_protein = uni_id
+            break
 
-selected_model = st.sidebar.selectbox('Select Model', ['GCN', 'GCN+GAT'])
+    selected_model = st.sidebar.selectbox('Select Model', ['GCN', 'GCN+GAT'])
 
     # Main panel
     st.write("## Prediction Results")
