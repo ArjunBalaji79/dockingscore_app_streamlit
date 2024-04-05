@@ -9,6 +9,18 @@ from stmol import *
 from stmol import showmol
 import py3Dmol
 
+# Function to generate dictionary mapping current names to new names from CSV
+def generate_name_mapping(csv_file_path):
+    name_mapping = {}
+    with open(csv_file_path, 'r') as csvfile:
+        csv_reader = csv.reader(csvfile)
+        next(csv_reader)  # Skip header row if exists
+        for row in csv_reader:
+            current_name = row[1]
+            new_name = row[2]
+            name_mapping[current_name] = new_name
+    return name_mapping
+
 # Preset data for dropdown menus
 organs = {
     'Brain': ['O14672', 'P07900', 'P35869', 'P40763', 'P49841', 'Q9UBS5l', 'Q00535', 'Q11130', 'Q16539', 'P05129'], 
@@ -89,4 +101,14 @@ def main():
     
 
 if __name__ == '__main__':
+    # Path to the CSV file containing name mapping
+    csv_file_path = 'Protein-list - Sheet1.csv'
+    # Generate name mapping dictionary
+    name_mapping = generate_name_mapping(csv_file_path)
+    # Update organs dictionary using name mapping
+    for organ, proteins in organs.items():
+        updated_proteins = []
+        for protein in proteins:
+            updated_proteins.append(name_mapping.get(protein, protein))
+        organs[organ] = updated_proteins
     main()
