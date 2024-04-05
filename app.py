@@ -8,6 +8,19 @@ import stmol
 from stmol import *
 from stmol import showmol
 import py3Dmol
+import csv
+
+# Function to generate dictionary mapping current names to new names from CSV
+def generate_name_mapping(csv_file_path):
+    name_mapping = {}
+    with open(csv_file_path, 'r') as csvfile:
+        csv_reader = csv.reader(csvfile)
+        next(csv_reader)  # Skip header row if exists
+        for row in csv_reader:
+            uniprot_id = row[1]
+            protein_name = row[2]
+            name_mapping[uniprot_id] = protein_name
+    return name_mapping
 
 # Preset data for dropdown menus
 organs = {
@@ -19,14 +32,26 @@ organs = {
 def main():
     st.title('ProteoDockNet: A Graph Neural Network Based Platform for Docking Score Prediction')
 
-    # Load the name mapping dictionary from the CSV file
-    name_mapping = {'P14555': 'Phospholipase A2, membrane associated', 'Q16539': 'Mitogen-activated protein kinase 14', 'P35869': 'Aryl hydrocarbon receptor', 'Q96RI1': 'Bile acid receptor', 'P41595': '5-hydroxytryptamine receptor 2B', 'P40763': 'Signal transducer and activator of transcription 3', 'Q16665': 'Hypoxia-inducible factor 1-alpha', 'Q16236': 'Nuclear factor erythroid 2-related factor 2', 'Q00535': 'Cyclin-dependent kinase 5', 'O14672': 'Disintegrin and metalloproteinase domain-containing protein 10', 'P07900': 'Heat shock protein HSP 90-alpha', 'P49841': 'Glycogen synthase kinase-3 beta', 'Q15465': 'Sonic hedgehog protein', 'P05129': 'Protein kinase C gamma type', 'P04150': 'Glucocorticoid receptor', 'Q11130': 'Alpha-(1,3)-fucosyltransferase 7', 'O14920': 'Inhibitor of nuclear factor kappa-B kinase subunit beta', 'P80365': '11-beta-hydroxysteroid dehydrogenase type 2'}
-
-
     # Sidebar for user input
     st.sidebar.header("User Input Features")
-    selected_organ = st.sidebar.selectbox('Select Organ', list(organs.keys()))
-    proteins = organs[selected_organ]
+    
+    # Path to the CSV file containing name mapping
+    csv_file_path = 'Protein-list - Sheet1.csv'
+    
+    # Generate name mapping dictionary
+    name_mapping = generate_name_mapping(csv_file_path)
+    
+    # Update organs dictionary using name mapping
+    updated_organs = {}
+    for organ, proteins in organs.items():
+        updated_proteins = []
+        for protein in proteins:
+            updated_proteins.append(name_mapping.get(protein, protein))
+        updated_organs[organ] = updated_proteins
+
+    selected_organ = st.sidebar.selectbox('Select Organ', list(updated_organs.keys()))
+    proteins = updated_organs[selected_organ]
+    
     selected_protein = st.sidebar.selectbox('Select Protein', proteins)
     selected_model = st.sidebar.selectbox('Select Model', ['GCN', 'GCN+GAT'])
 
@@ -54,11 +79,10 @@ def main():
     if st.button('Predict'):
         try:
             # Load the model based on the selected_model
-            selected_protein_name = name_mapping.get(selected_protein, selected_protein)  # Use the mapped name if available, else use original UniProt ID
             if selected_model == 'GCN':
-                model = load_gcn_model(selected_protein_name)  # Using the mapped name
+                model = load_gcn_model(selected_protein)
             elif selected_model == 'GCN+GAT':
-                model = load_gcn_gat_model(selected_protein_name)  # Using the mapped name
+                model = load_gcn_gat_model(selected_protein)
             else:
                 raise ValueError(f"Invalid model selection: {selected_model}")
 
