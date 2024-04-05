@@ -10,7 +10,7 @@ from stmol import showmol
 import py3Dmol
 import csv
 
-# Presetting data for dropdown menus
+# Preset data for dropdown menus
 organs_with_names = {
     'Brain': {
         'O14672': 'Disintegrin and metalloproteinase domain-containing protein 10',
@@ -65,15 +65,6 @@ def fetch_function_text(uniprot_id, csv_file_path):
 def main():
     st.title('ProteoDockNet: A Graph Neural Network Based Platform for Docking Score Prediction')
 
-    # Apply custom CSS to style the sidebar
-    st.markdown("""
-        <style>
-            .sidebar .sidebar-content {
-                background-color: #f0f0f0;
-            }
-        </style>
-    """, unsafe_allow_html=True)
-
     # Sidebar for user input
     st.sidebar.header("User Input Features")
     
@@ -99,7 +90,7 @@ def main():
 
     col1, col2, col3 = st.columns([1, 3, 1])
     with col2:
-
+        # Using markdown with HTML to style the button 
         smiles_string = st.text_input('Enter SMILES String', key='smiles_input')
         st.markdown(
             """
@@ -126,7 +117,7 @@ def main():
             graph = smiles_to_graph(smiles_string)  # Convert SMILES to graph
 
             if graph is not None:
-                # Making prediction
+                # Make prediction
                 model.eval()
                 with torch.no_grad():
                     prediction = model(graph)
@@ -138,9 +129,9 @@ def main():
                 csv_file_path = 'Protein-list - Sheet1.csv'
                 function_text = fetch_function_text(selected_protein, csv_file_path)
                 
-                # Displaying original UniProt ID and its function text if available
+                # Display original UniProt ID and its function text if available
                 if function_text:
-                    st.info(f"Original UniProt ID: {selected_protein}")
+                    st.info(f"UniProt ID: {selected_protein}")
                     st.info(f"Function: {function_text}")
 
             else:
@@ -157,4 +148,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
