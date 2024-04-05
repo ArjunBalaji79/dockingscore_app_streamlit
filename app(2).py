@@ -1,5 +1,5 @@
 import streamlit as st
-from utils import load_model, smiles_to_graph
+from utils import load_gcn_model, load_gcn_gat_model, smiles_to_graph
 import torch
 import numpy as np
 from PIL import Image
@@ -11,85 +11,14 @@ import py3Dmol
 
 # Preset data for dropdown menus
 organs = {
-    'Brain': ['O14672', 'P07900', 'P35869', 'P40763', 'P49841', 'Q9UBS5', 'Q00535', 'Q11130', 'Q16539', 'P05129'], 
-    'Organ2': ['Protein3', 'Protein4']
+    'Brain': ['O14672', 'P07900', 'P35869', 'P40763', 'P49841', 'Q9UBS5l', 'Q00535', 'Q11130', 'Q16539', 'P05129'], 
+    'Liver': ['P04150', 'P14555', 'P19793', 'P07900_Liver', 'P22845', 'P42574', 'P55210', 'Q15465', 'P35869_Liver', 'Q96RI1'],
+    'Kidney': ['O14920', 'P12821', 'P35869_Kidney', 'P42574_Kidney', 'P55210_Kidney', 'Q15303', 'Q16236', 'Q16665', 'P41595','P80365']
 }
 models = ['GCN', 'GCN+GAT']
 
-# Define your color palette
-primaryColor = "#4a69bd"  # Dark blue
-backgroundColor = "#f5f6fa"  # Light gray
-secondaryBackgroundColor = "#dcdde1"  # Slightly darker gray
-textColor = "#2f3640"  # Dark gray or black
-font = "sans serif"
-
-# Apply the theme globally
-st.set_page_config(
-    page_title="GNN Docking Score Prediction",
-    layout="wide",
-    initial_sidebar_state="expanded",
-    menu_items={
-        'Get Help': 'https://www.example.com/help',
-        'Report a bug': "https://www.example.com/bug",
-        'About': "# This is a header. This is an *extremely* cool app!"
-    }
-)
-
-# Custom CSS to inject our own color scheme and button style
-st.markdown(
-    f"""
-    <style>
-        .reportview-container .main .block-container{{
-            max-width: 90%;
-            padding-top: 5rem;
-            padding-right: 5rem;
-            padding-left: 5rem;
-            padding-bottom: 5rem;
-        }}
-        .sidebar .sidebar-content {{
-            background-color: {secondaryBackgroundColor};
-        }}
-        .Widget>label {{
-            color: {primaryColor};
-            font-family: {font};
-        }}
-        .stButton>button {{
-            color: {textColor};
-            border-color: {primaryColor};
-            background-color: {backgroundColor};
-        }}
-        .st-bb {{
-            background-color: transparent;
-        }}
-        .st-at {{
-            background-color: #fff;
-        }}
-        .markdown-text-container {{
-            font-family: {font};
-            color: {textColor};
-        }}
-        .css-1aumxhk {{
-            background-color: {backgroundColor};
-            border-color: {primaryColor};
-        }}
-        header {{
-            background-color: {primaryColor};
-        }}
-
-        /* Style for larger and centered button */
-        .big-button .stButton>button {{
-            height: 3em;     /* Larger button */
-            width: 10em;     /* Wider button */
-            font-size: 1em;  /* Larger font */
-            border-radius: 5px; /* Rounded corners */
-        }}
-    </style>
-    """,
-    unsafe_allow_html=True
-)
-
 def main():
-    st.title('Graph Neural Network based Docking Score Prediction')
+    st.title('ProteoDockNet: A Graph Neural Network Based Platform for Docking Score Prediction')
 
     # Sidebar for user input
     st.sidebar.header("User Input Features")
@@ -97,55 +26,67 @@ def main():
     proteins = organs[selected_organ]
     selected_protein = st.sidebar.selectbox('Select Protein', proteins)
     selected_model = st.sidebar.selectbox('Select Model', models)
-    smiles_string = st.sidebar.text_input('Enter SMILES String')
 
     # Main panel
-    st.write("## Prediction Results and Model Architecture")
+    st.write("## Prediction Results")
+    # model_image = Image.open('download-2.png')
+    # st.image(model_image, caption='Model Architecture',use_column_width=True)
 
-    if(selected_model=="GCN"):
-      model_image = Image.open('GCNmodelflowchart.png')
-      st.image(model_image, caption='GCN Model Architecture',width=200)
-    else:
-      model_image = Image.open('EnhancedGCNmodelflowchart.png')
-      st.image(model_image, caption='GCN+GAT Model Architecture', width=250)
-
-    # Predict Button
-    col1, col2, col3 = st.columns([1,2,1])
+    col1, col2, col3 = st.columns([1, 3, 1])
     with col2:
+        # Using markdown with HTML to style the button 
+        smiles_string = st.text_input('Enter SMILES String', key='smiles_input')
         st.markdown(
-            f'<div class="big-button">',
-            unsafe_allow_html=True
+            """
+            <style>
+                div.stButton > button:first-child {
+                    width: 100%;
+                    height: 50px;  # Custom height
+                    font-size: 20px;  # Larger font size
+                }
+            </style>""",
+            unsafe_allow_html=True,
         )
-        if st.button('Predict', key='predict_button'):
-            try:
-                # Load the model
-                model = load_model(selected_model, selected_protein)
-                graph = smiles_to_graph(smiles_string)  # Convert SMILES to graph
+    
+    if st.button('Predict'):
+        try:
+            # Load the model based on the selected_model
+            if selected_model == 'GCN':
+                model = load_gcn_model(selected_protein)
+            elif selected_model == 'GCN+GAT':
+                model = load_gcn_gat_model(selected_protein)
+            else:
+                raise ValueError(f"Invalid model selection: {selected_model}")
 
-                if graph is not None:
-                    # Make prediction
-                    model.eval()
-                    with torch.no_grad():
-                        prediction = model(graph)
-                        predicted_score = prediction.item()
-                    st.success(f'Predicted Docking Score: {predicted_score}')
-                else:
-                    st.error('Invalid SMILES string')
-            except Exception as e:
-                st.error(f'An error occurred: {e}')
+            graph = smiles_to_graph(smiles_string)  # Convert SMILES to graph
 
-        st.markdown('</div>', unsafe_allow_html=True)
+            if graph is not None:
+                # Make prediction
+                model.eval()
+                with torch.no_grad():
+                    prediction = model(graph)
+                    predicted_score = prediction.item()
+                    formatted_score = "{:.4f} KCal".format(predicted_score)
+                st.success(f'Predicted Docking Score: {formatted_score}')
+            else:
+                st.error('Invalid SMILES string')
+        except Exception as e:
+            st.error(f'An error occurred: {e}')
 
-    # Optional: Additional UI elements or animations
-    st.write("## Additional Information")
-    st.markdown("Page is Under Construction :construction: :rotating_light: :helicopter:")
+    #if(selected_model=="GCN"):
+      #model_image = Image.open('GCNmodelflowchart.png')
+      #st.image(model_image, caption='GCN Model Architecture',width=200)
+    #else:
+      #model_image = Image.open('EnhancedGCNmodelflowchart.png')
+      #st.image(model_image, caption='GCN+GAT Model Architecture', width=250)
+      
 
     # 1A2C
     # Structure of thrombin inhibited by AERUGINOSIN298-A from a BLUE-GREEN ALGA
     xyzview = py3Dmol.view(query='pdb:1A2C') 
     xyzview.setStyle({'cartoon':{'color':'spectrum'}})
     showmol(xyzview, height = 500,width=800)
-
+    
 
 if __name__ == '__main__':
     main()
