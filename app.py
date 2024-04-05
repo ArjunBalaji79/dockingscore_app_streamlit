@@ -10,28 +10,7 @@ from stmol import showmol
 import py3Dmol
 import csv
 
-# Function to generate dictionary mapping current names to new names from CSV
-def generate_name_mapping(csv_file_path):
-    name_mapping = {}
-    with open(csv_file_path, 'r') as csvfile:
-        csv_reader = csv.reader(csvfile)
-        next(csv_reader)  # Skip header row if exists
-        for row in csv_reader:
-            uniprot_id = row[1]
-            protein_name = row[2]
-            function = row[3]
-            family_name = row[4]
-            name_mapping[uniprot_id] = (protein_name, function, family_name)
-    return name_mapping
-
 # Preset data for dropdown menus
-organs = {
-    'Brain': ['O14672', 'P07900', 'P35869', 'P40763', 'P49841', 'Q9UBS5l', 'Q00535', 'Q11130', 'Q16539', 'P05129'], 
-    'Liver': ['P04150', 'P14555', 'P19793', 'P07900_Liver', 'P22845', 'P42574', 'P55210', 'Q15465', 'P35869_Liver', 'Q96RI1'],
-    'Kidney': ['O14920', 'P12821', 'P35869_Kidney', 'P42574_Kidney', 'P55210_Kidney', 'Q15303', 'Q16236', 'Q16665', 'P41595','P80365']
-}
-
-# New dictionary with protein names
 organs_with_names = {
     'Brain': {
         'O14672': 'Disintegrin and metalloproteinase domain-containing protein 10',
@@ -77,27 +56,13 @@ def main():
     # Sidebar for user input
     st.sidebar.header("User Input Features")
     
-    # Path to the CSV file containing name mapping
-    csv_file_path = 'Protein-list - Sheet1.csv'
-    
-    # Generate name mapping dictionary
-    name_mapping = generate_name_mapping(csv_file_path)
-    
-    # Update organs dictionary using name mapping
-    updated_organs = {}
-    for organ, proteins in organs.items():
-        updated_proteins = []
-        for protein in proteins:
-            updated_proteins.append(name_mapping.get(protein, protein))
-        updated_organs[organ] = updated_proteins
-
-    selected_organ = st.sidebar.selectbox('Select Organ', list(updated_organs.keys()))
+    selected_organ = st.sidebar.selectbox('Select Organ', list(organs_with_names.keys()))
     
     # Display protein names from organs_with_names dictionary in dropdown menu
     proteins_with_names = organs_with_names[selected_organ]
     selected_protein_display = st.sidebar.selectbox('Select Protein', list(proteins_with_names.values()))
 
-    # Convert the displayed protein name back to the original UniProt name
+    # Convert the displayed protein name back to the original UniProt ID
     selected_protein = ''
     for uni_id, name in proteins_with_names.items():
         if name == selected_protein_display:
@@ -151,13 +116,6 @@ def main():
                 # Display original UniProt ID used for processing
                 st.write(f"Original UniProt ID: {selected_protein}")
 
-                # Display function and family name from name mapping
-                protein_info = name_mapping.get(selected_protein, ('', '', ''))
-                function_name = protein_info[1]
-                family_name = protein_info[2]
-                st.write(f"Function: {function_name}")
-                st.write(f"Family Name: {family_name}")
-                
             else:
                 st.error('Invalid SMILES string')
         except Exception as e:
