@@ -10,6 +10,38 @@ from stmol import showmol
 import py3Dmol
 import csv
 
+# Function to convert UniProt ID to PDB ID
+def uniprot_to_pdb(uniprot_id):
+    try:
+        # Send a request to the UniProt API to retrieve PDB mappings
+        response = requests.get(f'https://www.uniprot.org/uniprot/{uniprot_id}.xml')
+        xml_tree = ET.parse(io.StringIO(response.text))
+        root = xml_tree.getroot()
+        namespaces = {'ns': 'http://uniprot.org/uniprot'}
+        
+        # Find PDB ID(s) in the XML response
+        pdb_ids = []
+        for entry in root.findall('.//ns:dbReference[@type="PDB"]', namespaces):
+            pdb_id = entry.attrib['id']
+            pdb_ids.append(pdb_id)
+        
+        return pdb_ids
+    except Exception as e:
+        st.error(f'Error retrieving PDB mappings for UniProt ID {uniprot_id}: {e}')
+        return []
+
+# Function to visualize protein structure using py3Dmol
+def visualize_protein(uniprot_id):
+    pdb_ids = uniprot_to_pdb(uniprot_id)
+    if pdb_ids:
+        for pdb_id in pdb_ids:
+            st.write(f'### Structure for PDB ID: {pdb_id}')
+            viewer = py3Dmol.view(query=f'pdb:{pdb_id}')
+            viewer.setStyle({'cartoon':{'color':'spectrum'}})
+            viewer.show()
+    else:
+        st.warning('No PDB mappings found for the given UniProt ID.')
+
 # Function to generate dictionary mapping current names to new names from CSV
 def generate_name_mapping(csv_file_path):
     name_mapping = {}
@@ -86,20 +118,10 @@ def main():
         except Exception as e:
             st.error(f'An error occurred: {e}')
 
-    #if(selected_model=="GCN"):
-      #model_image = Image.open('GCNmodelflowchart.png')
-      #st.image(model_image, caption='GCN Model Architecture',width=200)
-    #else:
-      #model_image = Image.open('EnhancedGCNmodelflowchart.png')
-      #st.image(model_image, caption='GCN+GAT Model Architecture', width=250)
-      
-
-    # 1A2C
-    # Structure of thrombin inhibited by AERUGINOSIN298-A from a BLUE-GREEN ALGA
-    xyzview = py3Dmol.view(query='pdb:1A2C') 
-    xyzview.setStyle({'cartoon':{'color':'spectrum'}})
-    showmol(xyzview, height = 500,width=800)
-    
+    # Visualize protein structure for the selected protein
+    st.write("## Protein Structure Visualization")
+    selected_uniprot_id = name_mapping.get(selected_protein, selected_protein)
+    visualize_protein(selected_uniprot_id)
 
 if __name__ == '__main__':
     # Path to the CSV file containing name mapping
