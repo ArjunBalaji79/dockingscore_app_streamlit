@@ -50,6 +50,11 @@ organs_with_names = {
     }
 }
 
+# Function to fetch function text from UniProt ID
+def fetch_function_text(uniprot_id):
+    # Fetch function text from database or API based on UniProt ID
+    return "Function text from database for UniProt ID: " + uniprot_id
+
 def main():
     st.title('ProteoDockNet: A Graph Neural Network Based Platform for Docking Score Prediction')
 
@@ -113,8 +118,14 @@ def main():
                     formatted_score = "{:.4f} KCal".format(predicted_score)
                 st.success(f'Predicted Docking Score: {formatted_score}')
                 
-                # Display original UniProt ID used for processing
-                st.write(f"Original UniProt ID: {selected_protein}")
+                # Fetch function text for original UniProt ID
+                function_text = fetch_function_text(selected_protein)
+                
+                # Display original UniProt ID and its function text in blue box
+                st.info("Original UniProt ID and Function")
+                st.info(f"UniProt ID: {selected_protein}")
+                if function_text:
+                    st.info(function_text)
 
             else:
                 st.error('Invalid SMILES string')
