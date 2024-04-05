@@ -19,7 +19,9 @@ def generate_name_mapping(csv_file_path):
         for row in csv_reader:
             uniprot_id = row[1]
             protein_name = row[2]
-            name_mapping[uniprot_id] = protein_name
+            function = row[3]
+            family_name = row[4]
+            name_mapping[uniprot_id] = (protein_name, function, family_name)
     return name_mapping
 
 # Preset data for dropdown menus
@@ -145,6 +147,17 @@ def main():
                     predicted_score = prediction.item()
                     formatted_score = "{:.4f} KCal".format(predicted_score)
                 st.success(f'Predicted Docking Score: {formatted_score}')
+                
+                # Display original UniProt ID used for processing
+                st.write(f"Original UniProt ID: {selected_protein}")
+
+                # Display function and family name from name mapping
+                protein_info = name_mapping.get(selected_protein, ('', '', ''))
+                function_name = protein_info[1]
+                family_name = protein_info[2]
+                st.write(f"Function: {function_name}")
+                st.write(f"Family Name: {family_name}")
+                
             else:
                 st.error('Invalid SMILES string')
         except Exception as e:
