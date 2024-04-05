@@ -35,8 +35,19 @@ def main():
 
     # Sidebar for user input
     st.sidebar.header("User Input Features")
-    selected_organ = st.sidebar.selectbox('Select Organ', list(organs.keys()))
-    proteins = organs[selected_organ]
+    
+    # Load name mapping dictionary from CSV
+    csv_file_path = 'Protein-list - Sheet1.csv'
+    name_mapping = generate_name_mapping(csv_file_path)
+    
+    # Update organs dictionary using name mapping
+    updated_organs = {}
+    for organ, proteins in organs.items():
+        updated_proteins = [name_mapping.get(protein, protein) for protein in proteins]
+        updated_organs[name_mapping.get(organ, organ)] = updated_proteins
+    
+    selected_organ = st.sidebar.selectbox('Select Organ', list(updated_organs.keys()))
+    proteins = updated_organs[selected_organ]
     selected_protein = st.sidebar.selectbox('Select Protein', proteins)
     selected_model = st.sidebar.selectbox('Select Model', models)
 
@@ -102,14 +113,4 @@ def main():
     
 
 if __name__ == '__main__':
-    # Path to the CSV file containing name mapping
-    csv_file_path = 'Protein-list - Sheet1.csv'
-    # Generate name mapping dictionary
-    name_mapping = generate_name_mapping(csv_file_path)
-    # Update organs dictionary using name mapping
-    for organ, proteins in organs.items():
-        updated_proteins = []
-        for protein in proteins:
-            updated_proteins.append(name_mapping.get(protein, protein))
-        organs[organ] = updated_proteins
     main()
