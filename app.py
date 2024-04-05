@@ -8,6 +8,7 @@ import stmol
 from stmol import *
 from stmol import showmol
 import py3Dmol
+import csv
 
 # Preset data for dropdown menus
 organs_with_names = {
