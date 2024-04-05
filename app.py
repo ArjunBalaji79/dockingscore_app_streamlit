@@ -8,6 +8,7 @@ import stmol
 from stmol import *
 from stmol import showmol
 import py3Dmol
+import csv
 
 # Function to generate dictionary mapping current names to new names from CSV
 def generate_name_mapping(csv_file_path):
