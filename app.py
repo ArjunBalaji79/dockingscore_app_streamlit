@@ -1,13 +1,4 @@
 import streamlit as st
-from utils import load_gcn_model, load_gcn_gat_model, smiles_to_graph
-import torch
-import numpy as np
-from PIL import Image
-import os
-import stmol
-from stmol import *
-from stmol import showmol
-import py3Dmol
 import csv
 
 # Preset data for dropdown menus
@@ -50,10 +41,17 @@ organs_with_names = {
     }
 }
 
-# Function to fetch function text from UniProt ID
-def fetch_function_text(uniprot_id):
-    # Fetch function text from database or API based on UniProt ID
-    return "Function text from database for UniProt ID: " + uniprot_id
+# Function to fetch function text from CSV using UniProt ID
+def fetch_function_text(uniprot_id, csv_file_path):
+    function_text = ""
+    with open(csv_file_path, 'r') as csvfile:
+        csv_reader = csv.reader(csvfile)
+        next(csv_reader)  # Skip header row if exists
+        for row in csv_reader:
+            if row[1] == uniprot_id:
+                function_text = row[3]  # Assuming function is in column 4
+                break
+    return function_text
 
 def main():
     st.title('ProteoDockNet: A Graph Neural Network Based Platform for Docking Score Prediction')
@@ -119,13 +117,14 @@ def main():
                 st.success(f'Predicted Docking Score: {formatted_score}')
                 
                 # Fetch function text for original UniProt ID
-                function_text = fetch_function_text(selected_protein)
+                csv_file_path = 'Protein-list - Sheet1.csv'
+                function_text = fetch_function_text(selected_protein, csv_file_path)
                 
-                # Display original UniProt ID and its function text in blue box
-                st.info("Original UniProt ID and Function")
-                st.info(f"UniProt ID: {selected_protein}")
+                # Display original UniProt ID and its function text if available
                 if function_text:
-                    st.info(function_text)
+                    st.info("Original UniProt ID and Function")
+                    st.info(f"UniProt ID: {selected_protein}")
+                    st.info(f"Function: {function_text}")
 
             else:
                 st.error('Invalid SMILES string')
