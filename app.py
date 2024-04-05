@@ -131,7 +131,6 @@ def main():
                 
                 # Display original UniProt ID and its function text if available
                 if function_text:
-                    st.info("Original UniProt ID and Function")
                     st.info(f"UniProt ID: {selected_protein}")
                     st.info(f"Function: {function_text}")
 
