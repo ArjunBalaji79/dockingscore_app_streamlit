@@ -48,7 +48,11 @@ def main():
     
     selected_organ = st.sidebar.selectbox('Select Organ', list(updated_organs.keys()))
     proteins = updated_organs[selected_organ]
-    selected_protein = st.sidebar.selectbox('Select Protein', proteins)
+    
+    # Reverse lookup original UniProt IDs from name mapping
+    original_proteins = [key for key, value in name_mapping.items() if value in proteins]
+    
+    selected_protein = st.sidebar.selectbox('Select Protein', original_proteins)
     selected_model = st.sidebar.selectbox('Select Model', models)
 
     # Main panel
@@ -96,14 +100,6 @@ def main():
                 st.error('Invalid SMILES string')
         except Exception as e:
             st.error(f'An error occurred: {e}')
-
-    #if(selected_model=="GCN"):
-      #model_image = Image.open('GCNmodelflowchart.png')
-      #st.image(model_image, caption='GCN Model Architecture',width=200)
-    #else:
-      #model_image = Image.open('EnhancedGCNmodelflowchart.png')
-      #st.image(model_image, caption='GCN+GAT Model Architecture', width=250)
-      
 
     # 1A2C
     # Structure of thrombin inhibited by AERUGINOSIN298-A from a BLUE-GREEN ALGA
