@@ -139,6 +139,13 @@ def main():
         except Exception as e:
             st.error(f'An error occurred: {e}')
 
+    if(selected_model=="GCN"):
+      model_image = Image.open('GCNmodelflowchart.png')
+      st.image(model_image, caption='GCN Model Architecture',width=200)
+    else:
+      model_image = Image.open('EnhancedGCNmodelflowchart.png')
+      st.image(model_image, caption='GCN+GAT Model Architecture', width=250)
+
     # 1A2C
     # Structure of thrombin inhibited by AERUGINOSIN298-A from a BLUE-GREEN ALGA
     xyzview = py3Dmol.view(query='pdb:1A2C') 
