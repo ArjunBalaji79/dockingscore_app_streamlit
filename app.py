@@ -122,7 +122,7 @@ def main():
                 with torch.no_grad():
                     prediction = model(graph)
                     predicted_score = prediction.item()
-                    formatted_score = "{:.4f} KCal".format(predicted_score)
+                    formatted_score = "{:.2f} KCal".format(predicted_score)
                 st.success(f'Predicted Docking Score: {formatted_score}')
                 
                 # Fetch function text for original UniProt ID
