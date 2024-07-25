@@ -1,6 +1,8 @@
 ## ProteoDockNet Web Application
 
-https://dx.doi.org/10.17504/protocols.io.j8nlkoy9xv5r/v1
+Protocols.io Paper: https://dx.doi.org/10.17504/protocols.io.j8nlkoy9xv5r/v1
 
-https://dockingscoreappapp-vypudgobchyjwk4n3w2fy5.streamlit.app/
- 
+Website: https://dockingscoreappapp-vypudgobchyjwk4n3w2fy5.streamlit.app/
+
+Abstract:
+Assessing the affinity between specific human proteins and drugs through docking scores is a crucial aspect of structure-based drug design. Traditionally, Quantitative Structure-Activity Relationship (QSAR) models have been used, however, ack the ability to capture the intricate relationships within protein-ligand complexes. This research explores the burgeoning potential of Graph Neural Networks (GNNs) to revolutionize this field, by employing QSAR models as original datasets for GNN architecture development to predict the molecular properties using simple SMILES notation of small molecules. Having selected significant proteins from three major organs – liver, kidney and brain, these were docked against MolPort database, and designed QSAR models using multiple linear regression and partial least squares via Schrodinger. The core dataset employed in this research comprises molecular information denoted by MolPort IDs alongside corresponding docking scores, essential for evaluating molecular interactions, from which the initial QSAR dataset was employed. A key focus of this study lies in data preprocessing, where each molecule, initially represented as a SMILES string, undergoes conversion into a graph structure. The GNN architecture was built with graphical convolutional network (GCN) and hybrid GCN (wuth attention mechanisms) to improve accuracy and to allow users to choose their algorithm to be run during protein-ligand binding prediction. All 60 generated models (10 proteins- GCN + GAT models for each), were assessed via RMSE and MAE metrics, before being deployed on Streamlit The outcomes show an immediate prediction of the docking score of any given SMILES, against the set of proteins trained in ProteoDockNet.
