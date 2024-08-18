@@ -1,5 +1,7 @@
 ## ProteoDockNet Web Application
 
+Computational and Structural Biotechnology Reports Paper: https://www.sciencedirect.com/science/article/pii/S2950363924000115?ref=cra_js_challenge&fr=RR-1
+
 Protocols.io Paper: https://dx.doi.org/10.17504/protocols.io.j8nlkoy9xv5r/v1
 
 Website: https://dockingscoreappapp-vypudgobchyjwk4n3w2fy5.streamlit.app/
